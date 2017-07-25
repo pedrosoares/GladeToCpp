@@ -1,0 +1,3 @@
+[submodule "vendor/Tigre"]
+	path = vendor/Tigre
+	url = https://github.com/TigreFramework/String
