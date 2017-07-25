@@ -60,25 +60,22 @@ void Generate(Parse::Window * window){
 }
 
 int main(int argc, char *argv[]){
-    for (int i = 0; i < argc; ++i) {
-        if(argv[i][0] != '.'){
+    for (int i = 1; i < argc; ++i) {
+        std::string file = "../";
+        file += argv[i];
 
-            std::string file = "../";
-            file += argv[i];
-
-            struct stat buffer;
+        struct stat buffer;
+        if(!(stat (file.c_str(), &buffer) == 0)){
+            file = argv[i];
             if(!(stat (file.c_str(), &buffer) == 0)){
-                file = argv[i];
-                if(!(stat (file.c_str(), &buffer) == 0)){
-                    continue;
-                }
+                continue;
             }
-
-            Parse::Window * window = new Parse::Window();
-            Parse::parseMe(window, file);
-            Generate(window);
-            delete window;
         }
+
+        Parse::Window * window = new Parse::Window();
+        Parse::parseMe(window, file);
+        Generate(window);
+        delete window;
     }
     return 0;
 }
