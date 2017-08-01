@@ -19,5 +19,5 @@ include_directories("vendor")
 link_libraries(String)
 
 
-set(SOURCE_FILES main.cpp MainWindow.h GtkMap.cpp Parse.cpp)
+set(SOURCE_FILES main.cpp GtkMap.cpp Parse.cpp)
 add_executable(GladeToCpp ${SOURCE_FILES})
