@@ -5,17 +5,25 @@
 #include "Tigre/String.h"
 #include "Parse.cpp"
 
+static int varCount = 0;
+
 std::string renderUi(std::string &ui_init, Parse::Object* item, std::string &proprety){
-    std::string name = item->name.length() > 0 ? item->name : item->type+"_item";
+    std::string name = item->name.length() > 0 ? item->name : item->type+"_item"+std::to_string(varCount);
+    varCount++;
     proprety += "                "+GtkMap::typeToGtkmmClass(item->type)+" "+name+";\n";
     for(auto const &propety : item->properties) {
-        ui_init += "                this->"+name+"."+GtkMap::propertyToGtkmm(propety.first)+"("+GtkMap::propetyValueToString(propety.second)+");\n";
+        std::string command = GtkMap::propertyToGtkmm(propety.first);
+        ui_init += "                this->"+name+"."+command+"("+GtkMap::propetyValueToString(propety.second, command)+");\n";
     }
     for(auto item_ : item->childrens) {
         std::string child_name = renderUi(ui_init, item_, proprety);
 
         if(item_->attach == NULL){
-            ui_init += "                this->"+name+".add("+child_name+");\n\n";
+            if(item_->isSubmenu == false){
+                ui_init += "                this->"+name+".add("+child_name+");\n\n";
+            }else{
+                ui_init += "                this->"+name+".set_submenu("+child_name+");\n\n";
+            }
         }else{
             ui_init += "                this->"+name+".attach("+child_name+","+item_->attach->left+","+item_->attach->top+", 1, 1);\n\n";
         }
@@ -32,7 +40,8 @@ void Generate(Parse::Window * window){
     std::string proprety = "";
     std::string ui_init = "";
     for(auto const &propety : window->properties) {
-        ui_init += "window->"+GtkMap::propertyToGtkmm(propety.first)+"("+GtkMap::propetyValueToString(propety.second)+");\n";
+        std::string command = GtkMap::propertyToGtkmm(propety.first);
+        ui_init += "window->"+command+"("+GtkMap::propetyValueToString(propety.second, command)+");\n";
     }
 
     for(auto item : window->childrens) {

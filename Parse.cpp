@@ -47,6 +47,7 @@ namespace Parse {
             Size *dimencions = NULL;
             Attach *attach = NULL;
             Position *position = NULL;
+            bool isSubmenu = false;
 
             void setPosition(std::string anchor, std::string coordN) {
                 if (position == NULL) {
@@ -129,8 +130,7 @@ namespace Parse {
                             if (type_ == "x" || type_ == "y") {
                                 actual->setPosition(type_, (char *) cur->children->content);
                             }
-                            if (type_ == "left_attach" || type_ == "right_attach" || type_ == "top_attach" ||
-                                type_ == "bottom_attach") {
+                            if (type_ == "left_attach" || type_ == "right_attach" || type_ == "top_attach" || type_ == "bottom_attach") {
                                 actual->setAttach(type_, (char *) cur->children->content);
                             }
                         }
@@ -143,6 +143,11 @@ namespace Parse {
                     Object *child = actual;
                     if (name == "child") {
                         child = new Object();
+                        if(cur->properties != NULL && string((char *) cur->properties->name) == "type"){
+                            if(string((char *) cur->properties->children->content) == "submenu") {
+                                child->isSubmenu = true;
+                            }
+                        }
                         actual->childrens.push_back(child);
                     }
                     weNeedGoDeeper(cur->children, child);

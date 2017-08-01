@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <cstring>
+#include "Tigre/String.h"
 
 namespace GtkMap {
 
@@ -83,7 +84,7 @@ namespace GtkMap {
         return "set_"+propety;
     }
 
-    static std::string propetyValueToString(std::string value){
+    static std::string propetyValueToString(std::string value, std::string command = ""){
         if(value == "True"){
             return "true";
         }
@@ -92,6 +93,12 @@ namespace GtkMap {
         }
         if(is_number(value)){
             return value;
+        }
+        if(command != ""){
+            if(command == "set_shadow_type"){
+                std::transform(value.begin(), value.end(),value.begin(), ::toupper);
+                return "Gtk::SHADOW_"+value;
+            }
         }
         return "\""+value+"\"";
     }
@@ -133,7 +140,13 @@ namespace GtkMap {
         if(type == "GtkLabel"){
             return "Gtk::Label";
         }
-        return "NotFound";
+        Tigre::String classname = type;
+        auto pieaces = classname.explode("Gtk");
+        if(pieaces.size() == 1)
+            return "NotFound";
+        else{
+            return "Gtk::"+pieaces[1].getValue();
+        }
     }
 
 }
