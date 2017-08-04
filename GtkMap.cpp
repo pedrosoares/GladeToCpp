@@ -142,7 +142,7 @@ namespace GtkMap {
         }
         Tigre::String classname = type;
         auto pieaces = classname.explode("Gtk");
-        if(pieaces.size() == 1)
+        if(pieaces.size() <= 1)
             return "NotFound";
         else{
             return "Gtk::"+pieaces[1].getValue();

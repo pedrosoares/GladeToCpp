@@ -101,10 +101,14 @@ namespace Parse {
     static void weNeedGoDeeper(xmlNodePtr cur, Object *actual) {
         while (cur != NULL) {
             std::string name = (char *) cur->name;
+            if(name == "placeholder"){
+                cur = cur->next;
+                continue;
+            }
             if (name != "text") {
                 auto properties = cur->properties;
                 while (properties != NULL) {
-                    //cout << cur->name << " || " << properties->name << " || " << properties->children->content << endl;
+                    cout << cur->name << " || " << properties->name << " || " << properties->children->content << endl;
 
                     if (name == "object" && string((char *) properties->name) == "class") {
                         actual->type = (char *) properties->children->content;
@@ -142,13 +146,15 @@ namespace Parse {
                 if (cur->children != NULL) {
                     Object *child = actual;
                     if (name == "child") {
-                        child = new Object();
-                        if(cur->properties != NULL && string((char *) cur->properties->name) == "type"){
-                            if(string((char *) cur->properties->children->content) == "submenu") {
-                                child->isSubmenu = true;
+                        if(string((char *) cur->children->next->name) != "placeholder") {
+                            child = new Object();
+                            if (cur->properties != NULL && string((char *) cur->properties->name) == "type") {
+                                if (string((char *) cur->properties->children->content) == "submenu") {
+                                    child->isSubmenu = true;
+                                }
                             }
+                            actual->childrens.push_back(child);
                         }
-                        actual->childrens.push_back(child);
                     }
                     weNeedGoDeeper(cur->children, child);
                 }
