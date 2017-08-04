@@ -24,7 +24,7 @@ namespace GtkMap {
             "    class {className} {\n"
             "\n"
             "        public:\n"
-            "            void setupUi({windowType} *window) {\n"
+            "            void setupUi({windowType} *{windowParamether}) {\n"
             "{UI_Initializer}\n"
             "            }\n"
             "\n"

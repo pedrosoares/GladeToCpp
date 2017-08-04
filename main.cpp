@@ -7,10 +7,13 @@
 
 static int varCount = 0;
 
-std::string renderUi(std::string &ui_init, Parse::Object* item, std::string &proprety){
-    std::string name = item->name.length() > 0 ? item->name : item->type+"_item"+std::to_string(varCount);
-    varCount++;
-    proprety += "                "+GtkMap::typeToGtkmmClass(item->type)+" "+name+";\n";
+std::string renderUi(std::string &ui_init, Parse::Object* item, std::string &proprety, bool isTemplate = false){
+    std::string name = item->name;
+    if(!isTemplate) {
+        name = item->name.length() > 0 ? item->name : item->type + "_item" + std::to_string(varCount);
+        varCount++;
+        proprety += "                " + GtkMap::typeToGtkmmClass(item->type) + " " + name + ";\n";
+    }
     for(auto const &propety : item->properties) {
         std::string command = GtkMap::propertyToGtkmm(propety.first);
         ui_init += "                this->"+name+"."+command+"("+GtkMap::propetyValueToString(propety.second, command)+");\n";
@@ -35,10 +38,13 @@ void Generate(Parse::Window * window){
     Tigre::String ui_template = GtkMap::ui_template;
     window->name = window->name.length() > 0 ? window->name : "MainWindow";
     ui_template.replace("{className}", window->name);
-    if(window->isTemplate == false){
-        ui_template.replace("{windowType}", GtkMap::typeToGtkmmClass(window->type));
+    if(window->isTemplate){
+        auto container = window->childrens.front();
+        ui_template.replace("{windowType}", GtkMap::typeToGtkmmClass(container->type));
+        ui_template.replace("{windowParamether}", container->name);
     }else{
-        ui_template.replace("{windowType}", "Gtk::Widget");
+        ui_template.replace("{windowType}", GtkMap::typeToGtkmmClass(window->type));
+        ui_template.replace("{windowParamether}", "window");
     }
 
     std::string proprety = "";
@@ -49,12 +55,16 @@ void Generate(Parse::Window * window){
     }
 
     for(auto item : window->childrens) {
-        std::string child_name = renderUi(ui_init, item, proprety);
-        if(item->attach == NULL){
-            ui_init += "                window->add("+child_name+");\n\n";
-        }else{
-            ui_init += "                window->attach("+child_name+","+item->attach->left+","+item->attach->top+", 1, 1);\n\n";
+
+        std::string child_name = renderUi(ui_init, item, proprety, window->isTemplate);
+        if(!window->isTemplate){
+            if(item->attach == NULL){
+                ui_init += "                window->add("+child_name+");\n\n";
+            }else{
+                ui_init += "                window->attach("+child_name+","+item->attach->left+","+item->attach->top+", 1, 1);\n\n";
+            }
         }
+
     }
     ui_template.replace("{UI_Initializer}", ui_init);
     ui_template.replace("{childrens}", proprety);
