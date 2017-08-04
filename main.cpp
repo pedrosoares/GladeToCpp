@@ -35,7 +35,11 @@ void Generate(Parse::Window * window){
     Tigre::String ui_template = GtkMap::ui_template;
     window->name = window->name.length() > 0 ? window->name : "MainWindow";
     ui_template.replace("{className}", window->name);
-    ui_template.replace("{windowType}", GtkMap::typeToGtkmmClass(window->type));
+    if(window->isTemplate == false){
+        ui_template.replace("{windowType}", GtkMap::typeToGtkmmClass(window->type));
+    }else{
+        ui_template.replace("{windowType}", "Gtk::Widget");
+    }
 
     std::string proprety = "";
     std::string ui_init = "";

@@ -39,6 +39,7 @@ namespace Parse {
 
     class Object {
         public:
+            virtual ~Object() {}
             string type;
             string name;
             map<string, string> properties;
@@ -95,6 +96,9 @@ namespace Parse {
 
     class Window : public Object {
 
+        public:
+            bool isTemplate = false;
+
     };
 
 
@@ -114,7 +118,18 @@ namespace Parse {
                         actual->type = (char *) properties->children->content;
                     }
 
-                    if (name == "object" && string((char *) properties->name) == "id") {
+                    if (name == "template" && string((char *) properties->name) == "parent") {
+                        actual->type = (char *) properties->children->content;
+                        if(Parse::Window* v = dynamic_cast<Parse::Window*>(actual)) {
+                            // old was safely casted to NewType
+                            v->isTemplate = true;
+                        }
+                    }
+
+                    if (
+                        (name == "object" && string((char *) properties->name) == "id") or
+                        (name == "template" && string((char *) properties->name) == "class")
+                    ) {
                         actual->name = (char *) properties->children->content;
                     }
                     std::string parent_name = (char *) cur->parent->name;
