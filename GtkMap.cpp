@@ -24,11 +24,13 @@ namespace GtkMap {
             "    class {className} {\n"
             "\n"
             "        public:\n"
+            "            {className}() {constructorParameters} { }\n"
+            "            ~{className}() { }\n"
             "            void setupUi({windowType} *{windowParamether}) {\n"
             "{UI_Initializer}\n"
             "            }\n"
             "\n"
-            "        private:\n"
+//            "        private:\n"
             "{childrens}\n"
             "\n"
             "    };\n"
@@ -147,6 +149,13 @@ namespace GtkMap {
         else{
             return "Gtk::"+pieaces[1].getValue();
         }
+    }
+
+    static std::string getParameterConstructor(std::string type, std::string className){
+        if(type == "GtkViewport") {
+            return " "+className+"(Gtk::Adjustment::create(0,0,0), Gtk::Adjustment::create(0,0,0))";
+        }
+        return "";
     }
 
 }
