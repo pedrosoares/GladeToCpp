@@ -82,6 +82,12 @@ namespace GtkMap {
         if(propety == "width_request"){
             return "height_request";
         }
+        if(propety == "orientation"){
+            return "compute_expand";
+        }
+        if(propety == "layout_style"){
+            return "set_layout";
+        }
 
         return "set_"+propety;
     }
@@ -100,6 +106,18 @@ namespace GtkMap {
             if(command == "set_shadow_type"){
                 std::transform(value.begin(), value.end(),value.begin(), ::toupper);
                 return "Gtk::SHADOW_"+value;
+            }
+            if(command == "set_type_hint"){
+                std::transform(value.begin(), value.end(),value.begin(), ::toupper);
+                return "Gdk::WINDOW_TYPE_HINT_"+value;
+            }
+            if(command == "compute_expand"){
+                std::transform(value.begin(), value.end(),value.begin(), ::toupper);
+                return "Gtk::ORIENTATION_"+value;
+            }
+            if(command == "set_layout"){
+                std::transform(value.begin(), value.end(),value.begin(), ::toupper);
+                return "Gtk::BUTTONBOX_"+value;
             }
         }
         return "\""+value+"\"";
