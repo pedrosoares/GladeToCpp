@@ -119,6 +119,14 @@ namespace GtkMap {
                 std::transform(value.begin(), value.end(),value.begin(), ::toupper);
                 return "Gtk::BUTTONBOX_"+value;
             }
+            if(command == "set_justify"){
+                std::transform(value.begin(), value.end(),value.begin(), ::toupper);
+                return "Gtk::JUSTIFY_"+value;
+            }
+            if(command == "set_halign"){
+                std::transform(value.begin(), value.end(),value.begin(), ::toupper);
+                return "Gtk::ALIGN_"+value;
+            }
         }
         return "\""+value+"\"";
     }
