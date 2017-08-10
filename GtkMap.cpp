@@ -88,6 +88,9 @@ namespace GtkMap {
         if(propety == "layout_style"){
             return "set_layout";
         }
+        if(propety == "wrap"){
+            return "set_line_wrap";
+        }
 
         return "set_"+propety;
     }
@@ -99,7 +102,7 @@ namespace GtkMap {
         if(value == "False"){
             return "false";
         }
-        if(is_number(value)){
+        if(is_number(value) && value != "*"){
             return value;
         }
         if(command != ""){
@@ -127,6 +130,18 @@ namespace GtkMap {
                 std::transform(value.begin(), value.end(),value.begin(), ::toupper);
                 return "Gtk::ALIGN_"+value;
             }
+            if(command == "set_input_purpose"){
+                std::transform(value.begin(), value.end(),value.begin(), ::toupper);
+                return "Gtk::INPUT_PURPOSE_"+value;
+            }
+            if(command == "set_invisible_char"){
+                std::transform(value.begin(), value.end(),value.begin(), ::toupper);
+                return "'"+value+"'";
+            }
+            if(command == "set_baseline_position"){
+                std::transform(value.begin(), value.end(),value.begin(), ::toupper);
+                return "Gtk::BASELINE_POSITION_"+value;
+            }
         }
         return "\""+value+"\"";
     }
@@ -137,7 +152,7 @@ namespace GtkMap {
             char  char_[] = " ";
             char_[0] = str[i];
 
-            if(isdigit(str[i]) || std::string(char_) == ".") {
+            if(isdigit(str[i]) && std::string(char_) != "*" || std::string(char_) == ".") {
                 //it's ok so far
             } else {
                 return false;

@@ -10,11 +10,11 @@ static int varCount = 0;
 void loadConstructorparameters(Parse::Object *object, std::string &parameters, std::string &varname);
 
 std::string renderUi(std::string &ui_init, Parse::Object* item, std::string &proprety, std::string &constructorParameters, bool isTemplate = false){
-    std::string name = item->name;
+    std::string name = item->name.length() > 0 ? item->name : item->type + "_item" + std::to_string(varCount);
     std::string namecaller = ""+item->name+"->";
+    varCount++;
     if(!isTemplate) {
-        name = item->name.length() > 0 ? item->name : item->type + "_item" + std::to_string(varCount);
-        varCount++;
+        //name = item->name.length() > 0 ? item->name : item->type + "_item" + std::to_string(varCount);
         proprety += "            " + GtkMap::typeToGtkmmClass(item->type) + " " + name + ";\n";
         namecaller = "this->"+name+".";
     }
@@ -55,6 +55,7 @@ void Generate(Parse::Window * window){
 
     if(window->isTemplate){
         auto container = window->childrens.front();
+        container->name = container->name.length() > 0 ? container->name : "container_parameter";
         ui_template.replace("{windowType}", GtkMap::typeToGtkmmClass(container->type));
         ui_template.replace("{windowParamether}", container->name);
     }else{
