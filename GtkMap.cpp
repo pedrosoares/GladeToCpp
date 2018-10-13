@@ -6,7 +6,9 @@
 #define GTKMAP__
 
 #include <iostream>
+#include <fstream>
 #include <cstring>
+#include <algorithm>
 #include "Tigre/String.h"
 
 namespace GtkMap {

@@ -3,12 +3,6 @@ project(GladeToCpp)
 
 set(CMAKE_CXX_STANDARD 11)
 
-find_package(PkgConfig)
-pkg_check_modules(PKG REQUIRED gtkmm-3.0)
-include_directories(${PKG_INCLUDE_DIRS})
-link_libraries(${PKG_LIBRARIES})
-link_directories(${PKG_LIBRARY_DIRS})
-
 find_package(LibXml2 REQUIRED)
 include_directories(${LIBXML2_INCLUDE_DIR})
 link_libraries(${LIBXML2_LIBRARIES})
