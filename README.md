@@ -11,7 +11,7 @@ Build this project to get the binary file.
 ### 2 Install the Binary
 
 Install the builded binary into the ```/usr/local/bin``` of your system.
-OBS: Windows is not suported yet.
+OBS: Windows is on msys2 folder.
 
 ### 3 Generate Yours Views
 
