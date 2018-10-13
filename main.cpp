@@ -1,6 +1,5 @@
 #include <iostream>
 #include <sys/stat.h>
-#include <gtkmm.h>
 #include "GtkMap.cpp"
 #include "Tigre/String.h"
 #include "Parse.cpp"
