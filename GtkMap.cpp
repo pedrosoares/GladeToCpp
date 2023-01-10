@@ -43,7 +43,7 @@ namespace GtkMap {
     static std::string propertyToGtkmm(std::string propety){
         std::replace(propety.begin(), propety.end(), '-', '_');
         //=================== BOOL PARAMETHER ========================
-        if(propety == "car_focus"){
+        /*if(propety == "can_focus"){
             return "set_can_focus";
         }
         if(propety == "visible"){
@@ -60,13 +60,13 @@ namespace GtkMap {
         }
         if(propety == "row_homogeneous"){
             return "set_row_homogeneous";
-        }
+        }*/
         //=================== STRING PARAMETHER ========================
-
+        /*
         if(propety == "label"){
             return "set_label";
         }
-
+        */
         if(propety == "left_attach"){
             return "set_margin_left";
         }
@@ -78,13 +78,13 @@ namespace GtkMap {
         }
         if(propety == "bottom_attach"){
             return "set_margin_bottom";
-        }
+        }/*
         if(propety == "width_request"){
             return "set_size_request";
         }
         if(propety == "width_request"){
             return "height_request";
-        }
+        }*/
         if(propety == "orientation"){
             return "compute_expand";
         }
@@ -165,7 +165,7 @@ namespace GtkMap {
     }
 
     static std::string typeToGtkmmClass(std::string type){
-        if(type == "GtkWindow"){
+        /*if(type == "GtkWindow"){
             return "Gtk::Window";
         }
         if(type == "GtkGrid"){
@@ -185,7 +185,7 @@ namespace GtkMap {
         }
         if(type == "GtkLabel"){
             return "Gtk::Label";
-        }
+        }*/
         Tigre::String classname = type;
         auto pieaces = classname.explode("Gtk");
         if(pieaces.size() <= 1)
