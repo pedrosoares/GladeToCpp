@@ -41,6 +41,7 @@ namespace GtkMap {
             "#endif";
 
     static std::string propertyToGtkmm(std::string propety){
+        std::replace(propety.begin(), propety.end(), '-', '_');
         //=================== BOOL PARAMETHER ========================
         if(propety == "car_focus"){
             return "set_can_focus";
